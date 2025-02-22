@@ -1,0 +1,22 @@
+[
+  {
+    "level": 1,
+    "name": "Goblin",
+    "totalLife": 3
+  },
+  {
+    "level": 2,
+    "name": "Orc",
+    "totalLife": 5
+  },
+  {
+    "level": 3,
+    "name": "Troll",
+    "totalLife": 8
+  },
+  {
+    "level": 4,
+    "name": "Dragon",
+    "totalLife": 15
+  }
+]
