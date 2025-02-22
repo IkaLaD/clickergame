@@ -10,9 +10,9 @@ class EnemyService {
   Future<EnemyModel?> getEnemyById(int enemyId) async {
     try {
       final String response = await rootBundle.loadString('assets/json/enemies.json');
-      final List<dynamic> data = json.decode(response);
+      final List data = json.decode(response);
 
-      final enemyData = data[enemyId-1];
+      final enemyData = data[enemyId%7];
 
       if (enemyData != null) {
         return EnemyModel.fromJson(enemyData);

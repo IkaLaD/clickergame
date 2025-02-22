@@ -1,0 +1,14 @@
+[
+  {
+    "pseudo": "Arthur",
+    "totalexp": 0,
+    "level": 0,
+    "augments": [1]
+  },
+  {
+    "pseudo": "Fabrice",
+    "totalexp": 0,
+    "level": 3,
+    "augments": [1,2,4,7]
+  }
+]

@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled1/viewmodels/enemy_view_model.dart';
-import 'package:untitled1/views/game_view.dart';
-import 'package:untitled1/views/home_view.dart';
-import 'core/config/config.dart';
+
+import 'viewmodels/enemy_view_model.dart';
+import 'viewmodels/player_view_model.dart';
+
+import 'views/game_view.dart';
+
+import 'views/home_view.dart';
 import 'viewmodels/user_viewmodel.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => EnemyViewModel()),
+        ChangeNotifierProvider<EnemyViewModel>(create: (context) => EnemyViewModel()),
+        ChangeNotifierProvider<PlayerViewModel>(create: (context) => PlayerViewModel()),
       ],
       child: MaterialApp(
-        title: 'Battle Game',
+        title: 'Clicker Game',
         theme: ThemeData(primarySwatch: Colors.blue),
         initialRoute: '/',
         routes: {

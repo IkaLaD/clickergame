@@ -6,7 +6,7 @@ class EnemyViewModel extends ChangeNotifier {
   final EnemyService _enemyRequest = EnemyService();
   late EnemyModel _enemy;
   bool fetchNewEnemy = false;
-  int _level = 1;
+  int _level = 0;
   int get level => _enemy.level;
   int get totalLife => _enemy.totalLife;
   int get currentLife => _enemy.currentLife;

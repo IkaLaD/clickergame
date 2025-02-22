@@ -1,22 +1,37 @@
 [
   {
-    "level": 1,
-    "name": "Goblin",
+    "level": 0,
+    "name": "Snake",
     "totalLife": 3
   },
   {
-    "level": 2,
-    "name": "Orc",
+    "level": 1,
+    "name": "Mantis",
     "totalLife": 5
   },
   {
+    "level": 2,
+    "name": "Crow",
+    "totalLife": 9
+  },
+  {
     "level": 3,
-    "name": "Troll",
-    "totalLife": 8
+    "name": "Butterfly",
+    "totalLife": 15
   },
   {
     "level": 4,
-    "name": "Dragon",
-    "totalLife": 15
+    "name": "Octopus",
+    "totalLife": 20
+  },
+  {
+    "level": 5,
+    "name": "Shark",
+    "totalLife": 30
+  },
+  {
+    "level": 6,
+    "name": "Lion",
+    "totalLife": 50
   }
 ]
