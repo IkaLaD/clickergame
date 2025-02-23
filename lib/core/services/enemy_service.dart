@@ -1,27 +1,27 @@
-
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:flutter/services.dart';
-
 import '../../models/enemy_model.dart';
+import 'package:http/http.dart' as http;
+import '../config/config.dart';
 
 class EnemyService {
 
+  final API_URL = "http://54.38.181.30/CLICKERGAMES-BACKEND";
+
   Future<EnemyModel?> getEnemyById(int enemyId) async {
-    try {
-      final String response = await rootBundle.loadString('assets/json/enemies.json');
-      final List data = json.decode(response);
+      final url = Uri.parse('$API_URL/ennemie/$enemyId');
 
-      final enemyData = data[enemyId%7];
+      final response = await http.get(url);
 
-      if (enemyData != null) {
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> enemyData = json.decode(response.body);
+
         return EnemyModel.fromJson(enemyData);
+      } else {
+        throw Exception('Erreur serveur: ${response.statusCode}');
       }
-      return null;
-    } catch (e) {
-      print("Erreur lors de la récupération de l'ennemi: $e");
-      return null;
-    }
+
   }
 
 }

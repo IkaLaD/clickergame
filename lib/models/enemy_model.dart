@@ -13,10 +13,11 @@ class EnemyModel {
   }
 
   factory EnemyModel.fromJson(Map<String, dynamic> json) {
+    final enemyData = json['data'][0];
     return EnemyModel(
-      name: json['name'] ?? "Name unknown",
-      totalLife: json['totalLife'] ?? 'Total life unknown',
-      level: json['level'] ?? 'level unknown',
+      name: enemyData['name'] ?? "Name unknown",
+      totalLife: enemyData['total_life'] ?? 'Total life unknown',
+      level: enemyData['level'] ?? 'level unknown',
     );
   }
 

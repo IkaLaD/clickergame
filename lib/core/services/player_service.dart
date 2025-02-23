@@ -5,23 +5,24 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 import '../../models/player_model.dart';
+import 'package:http/http.dart' as http;
 
 class PlayerService {
 
+  final API_URL = "http://54.38.181.30/CLICKERGAMES-BACKEND";
+
   Future<PlayerModel?> getPlayerById(int playerId) async {
-    try {
-      final String response = await rootBundle.loadString('assets/json/players.json');
-      final List data = json.decode(response);
+    final url = Uri.parse('$API_URL/player/$playerId');
 
-      final enemyData = data[playerId];
+    final response = await http.get(url);
 
-      if (enemyData != null) {
-        return PlayerModel.fromJson(enemyData);
-      }
-      return null;
-    } catch (e) {
-      print("Erreur lors de la récupération du joueur: $e");
-      return null;
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> playerData = json.decode(response.body);
+
+      return PlayerModel.fromJson(playerData);
+    } else {
+      throw Exception('Erreur serveur: ${response.statusCode}');
     }
   }
 }

@@ -13,10 +13,12 @@ class PlayerModel {
   });
 
   factory PlayerModel.fromJson(Map<String, dynamic> json) {
+    final playerData = json['data'][0];
+    print(playerData);
     return PlayerModel(
-      pseudo: json['pseudo'] ?? "Pseudo unknown",
-      totalexp: json['totalexp'] ?? 'Total exp unknown',
-      level: json['level'] ?? 'level unknown',
+      pseudo: playerData['pseudo'] ?? "Pseudo unknown",
+      totalexp: playerData['total_experience'] ?? 'Total exp unknown',
+      level: playerData['level'] ?? 'level unknown',
       augments: json['augments'] ?? []
     );
   }
