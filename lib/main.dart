@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled1/viewmodels/game_view_model.dart';
+import 'package:untitled1/viewmodels/shop_view_model.dart';
 
 import 'viewmodels/enemy_view_model.dart';
 import 'viewmodels/player_view_model.dart';
 
 import 'views/game_view.dart';
 
-import 'views/home_view.dart';
-import 'viewmodels/user_viewmodel.dart';
 
 void main() {
   runApp(
@@ -16,6 +14,10 @@ void main() {
       providers: [
         ChangeNotifierProvider<EnemyViewModel>(create: (context) => EnemyViewModel()),
         ChangeNotifierProvider<PlayerViewModel>(create: (context) => PlayerViewModel()),
+        ChangeNotifierProxyProvider<PlayerViewModel, ShopViewModel>(
+          create: (context) => ShopViewModel(Provider.of<PlayerViewModel>(context, listen: false)),
+          update: (context, playerViewModel, previous) => ShopViewModel(playerViewModel),
+        ),
       ],
       child: MaterialApp(
         title: 'Clicker Game',
@@ -29,23 +31,3 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserViewModel()),
-      ],
-      child: MaterialApp(
-        title: 'Clicker',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const HomeView(),
-      ),
-    );
-  }
-}
