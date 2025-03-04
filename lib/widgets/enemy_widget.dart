@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/enemy_view_model.dart';
+import '../viewmodels/game_view_model.dart';
+import '../viewmodels/player_view_model.dart';
 
 class EnemyWidget extends StatelessWidget {
-  final EnemyViewModel viewModel;
+  final GameViewModel gameViewModel;
   const EnemyWidget({
-    required this.viewModel,
+    required this.gameViewModel,
     super.key
   });
 
   @override
   Widget build(BuildContext context) {
+    EnemyViewModel viewModel = gameViewModel.enemyViewModel;
+    PlayerViewModel playerViewModel = gameViewModel.playerViewModel;
     return FutureBuilder<bool>(
       future: viewModel.fetchEnemy(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -30,10 +34,13 @@ class EnemyWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap: () => viewModel.attackEnemy(1), // Image tapped
+                      onTap: () => {
+                        playerViewModel.gainExp(viewModel.enemy!.level+1),
+                        viewModel.attackEnemy(playerViewModel.damages)
+                      },
                       child: Image.asset(
                         'assets/enemies/enemy_${viewModel.enemy!.level%7}.png',
-                        fit: BoxFit.cover, // Fixes border issues
+                        fit: BoxFit.cover,
                       ),
                     ),
                     Text(

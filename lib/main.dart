@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled1/viewmodels/game_view_model.dart';
 
 import 'viewmodels/enemy_view_model.dart';
 import 'viewmodels/player_view_model.dart';

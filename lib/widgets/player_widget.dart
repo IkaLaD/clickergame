@@ -34,6 +34,7 @@ class PlayerWidget extends StatelessWidget {
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text("Niveau joueur : ${viewModel.player!.level+1}"),
+                    Text("Exp du joueur : ${viewModel.player!.totalexp}"),
                   ],
                 );
               }

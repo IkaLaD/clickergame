@@ -34,7 +34,12 @@ class PlayerModel {
   bool buyAugment() {
     if (totalexp >= 100) {
       totalexp -= 100;
-      augments.add(augments[augments.length-1]+augments.length);
+      if (augments.isEmpty) {
+        augments.add(1);
+      }
+      else {
+        augments.add(augments[augments.length-1]+augments.length);
+        }
       _levelUp();
       return true;
     } else {
@@ -43,7 +48,7 @@ class PlayerModel {
   }
 
   getDamages() {
-    int damages = 0;
+    int damages = 1;
     for (int i = 0; i < augments.length; i++) {
       damages += augments[i] as int;
     }

@@ -10,6 +10,7 @@ class PlayerViewModel extends ChangeNotifier {
 
   gainExp(int exp) {
     _player.gainExp(exp);
+    notifyListeners();
   }
 
   buyAugment() {

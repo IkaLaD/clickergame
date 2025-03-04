@@ -10,7 +10,7 @@ class EnemyService {
   final API_URL = "http://54.38.181.30/CLICKERGAMES-BACKEND";
 
   Future<EnemyModel?> getEnemyById(int enemyId) async {
-      final url = Uri.parse('$API_URL/ennemie/$enemyId');
+      final url = Uri.parse('$API_URL/ennemie/${enemyId%7}');
 
       final response = await http.get(url);
 
