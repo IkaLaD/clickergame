@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +18,9 @@ class EnemyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     EnemyViewModel viewModel = gameViewModel.enemyViewModel;
     PlayerViewModel playerViewModel = gameViewModel.playerViewModel;
+
+    Timer timer = Timer.periodic(const Duration(seconds: 1), (timer) {});
+
     return FutureBuilder<bool>(
       future: viewModel.fetchEnemy(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -27,6 +32,14 @@ class EnemyWidget extends StatelessWidget {
           return Consumer<EnemyViewModel>(
               builder: (context, viewModel, child) {
                 if (viewModel.fetchNewEnemy) {
+                  timer.cancel();
+
+                  timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+                    if (timer.tick == 10 && viewModel.isPreviousEnemy == false && viewModel.level != 0) {
+                      viewModel.previousEnemy();
+                    }
+                  });
+
                   viewModel.fetchEnemy();
                   viewModel.fetchNewEnemy = false;
                 }
@@ -49,6 +62,7 @@ class EnemyWidget extends StatelessWidget {
                     ),
                     Text("Niveau : ${viewModel.enemy!.level+1}"),
                     Text("Vie : ${viewModel.currentLife} / ${viewModel.totalLife}"),
+                    _backToEnemy(viewModel),
                   ],
                 );
               }
@@ -57,6 +71,21 @@ class EnemyWidget extends StatelessWidget {
           return const Text("Aucun ennemi trouvé.");
         }
       },
+    );
+  }
+
+  _backToEnemy(EnemyViewModel viewModel) {
+    if (!viewModel.isPreviousEnemy) {
+      return const TextButton(
+          onPressed: null,
+          child: Text("Revenir à l'Ennemi")
+      );
+    }
+    return TextButton(
+        onPressed: () {
+            viewModel.backToEnemy();
+          },
+        child: const Text("Revenir à l'Ennemi")
     );
   }
 }
