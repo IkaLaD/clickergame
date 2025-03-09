@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled1/widgets/background/moving_background.dart';
 
 
 import '../viewmodels/enemy_view_model.dart';
@@ -20,15 +21,19 @@ class GameView extends StatelessWidget {
         playerViewModel: context.read<PlayerViewModel>()
     );
     return Scaffold(
-      appBar: AppBar(title: const Text("Clicker Game")),
-      body: Center(
-        child: Column(
-          children: [
-            PlayerWidget(viewModel: gameViewModel.playerViewModel, playerId: playerId),
-            EnemyWidget(gameViewModel: gameViewModel),
-          ],
-        )
-      ),
+      body:Stack(
+        children: [
+          const MovingBackground(),
+          Center(
+              child: Column(
+                children: [
+                  PlayerWidget(viewModel: gameViewModel.playerViewModel, playerId: playerId),
+                  EnemyWidget(gameViewModel: gameViewModel),
+                ],
+              )
+          ),
+        ],
+      )
     );
   }
 }

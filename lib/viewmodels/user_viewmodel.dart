@@ -6,6 +6,7 @@ class UserViewModel extends ChangeNotifier {
   List<UserModel> _users = [];
   bool _isLoading = false;
   String _error = '';
+
   bool _isLoggedIn = false;
   UserModel? _currentUser;
   int? _playerId; // Ajout de l'ID du joueur connecté
@@ -137,7 +138,7 @@ class UserViewModel extends ChangeNotifier {
           _currentUser = user;
           _isLoggedIn = true;
           _error = '';
-          _playerId = user.id; // Stocker l'ID du joueur connecté
+          _playerId = user.id;
           notifyListeners();
           return true;
         }

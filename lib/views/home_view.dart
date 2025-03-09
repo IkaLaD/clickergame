@@ -15,13 +15,8 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
 
-  // Un controller permet de suivre instantannément les changements dans un input.
-  // Celui-ci est utilisé pour la barre de recherche.
-  // on peut notamment récupérer le texte saisit grâce à lui (ex. _searchController.text)
   final TextEditingController _searchController = TextEditingController();
 
-  // Méthode qui est appelée qu'une seule fois lorsque l'instance du widget est insérée dans l'arbre.
-  // propre à un widget stateful
   @override
   void initState() {
     super.initState();
