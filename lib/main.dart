@@ -15,9 +15,13 @@ void main() {
         ChangeNotifierProvider<EnemyViewModel>(create: (context) => EnemyViewModel()),
         ChangeNotifierProvider<PlayerViewModel>(create: (context) => PlayerViewModel()),
         ChangeNotifierProxyProvider<PlayerViewModel, ShopViewModel>(
-          create: (context) => ShopViewModel(Provider.of<PlayerViewModel>(context, listen: false)),
-          update: (context, playerViewModel, previous) => ShopViewModel(playerViewModel),
+          create: (context) => ShopViewModel(
+            Provider.of<PlayerViewModel>(context, listen: false),
+          ),
+          update: (context, playerViewModel, previous) =>
+          previous!..updateData()
         ),
+
       ],
       child: MaterialApp(
         title: 'Clicker Game',

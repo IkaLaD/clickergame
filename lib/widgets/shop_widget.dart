@@ -77,7 +77,7 @@ class ShopWidget extends StatelessWidget {
                         trailing: ElevatedButton(
                           onPressed: canAfford
                               ? () {
-                            shopViewModel.purchaseItem(item.price, item.attack);
+                            shopViewModel.purchaseItem(item);
                           }
                               : null,
                           style: ElevatedButton.styleFrom(
