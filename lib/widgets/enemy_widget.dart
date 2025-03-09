@@ -11,8 +11,8 @@ import '../viewmodels/player_view_model.dart';
 class EnemyWidget extends StatefulWidget {
   final GameViewModel gameViewModel;
   const EnemyWidget({
-    super.key,
     required this.gameViewModel,
+    super.key
   });
 
   @override
@@ -48,9 +48,8 @@ class _EnemyWidgetState extends State<EnemyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    EnemyViewModel viewModel = widget.gameViewModel.enemyViewModel;
-    PlayerViewModel playerViewModel = widget.gameViewModel.playerViewModel;
-
+    EnemyViewModel viewModel = gameViewModel.enemyViewModel;
+    PlayerViewModel playerViewModel = gameViewModel.playerViewModel;
     return FutureBuilder<bool>(
       future: viewModel.fetchEnemy(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -60,6 +59,33 @@ class _EnemyWidgetState extends State<EnemyWidget> {
           return Text("Erreur : ${snapshot.error}");
         } else if (snapshot.hasData && snapshot.data == true && viewModel.enemy != null) {
           return Consumer<EnemyViewModel>(
+              builder: (context, viewModel, child) {
+                if (viewModel.fetchNewEnemy) {
+                  viewModel.fetchEnemy();
+                  viewModel.fetchNewEnemy = false;
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () => {
+                        playerViewModel.gainExp(viewModel.enemy!.level+1),
+                        viewModel.attackEnemy(playerViewModel.damages, playerViewModel)
+                      },
+                      child: Image.asset(
+                        'assets/enemies/enemy_${viewModel.enemy!.level%7}.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Text(
+                      "${viewModel.enemy!.name}, niveau : ${viewModel.enemy!.level}",
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    Text("Niveau : ${viewModel.enemy!.level+1}"),
+                    Text("Vie : ${viewModel.currentLife} / ${viewModel.totalLife}"),
+                  ],
+                );
+              }
             builder: (context, viewModel, child) {
               if (viewModel.fetchNewEnemy) {
                 _timer.cancel();

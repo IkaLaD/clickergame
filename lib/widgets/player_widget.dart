@@ -6,6 +6,7 @@ import '../viewmodels/player_view_model.dart';
 class PlayerWidget extends StatelessWidget {
   final PlayerViewModel viewModel;
   final int playerId;
+
   const PlayerWidget({
     required this.viewModel,
     required this.playerId,
@@ -20,26 +21,52 @@ class PlayerWidget extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text("Erreur : ${snapshot.error}");
-        } else if (snapshot.hasData && snapshot.data == true && viewModel.player != null) {
+          return Text("Erreur : \${snapshot.error}");
+        } else if (snapshot.hasData && snapshot.data == true &&
+            viewModel.player != null) {
           return Consumer<PlayerViewModel>(
-              builder: (context, viewModel, child) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+            builder: (context, viewModel, child) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (viewModel.player!.canBuyAugment)
                     TextButton(
                         onPressed: () => viewModel.buyAugment(),
                         child: const Text("Augment")
+                      onPressed: () {
+                        bool success = viewModel.player.buyAugment();
+                        if (success) {
+                          viewModel.notifyListeners();
+                        }
+                      },
+                      child: const Text("Passer au niveau supérieur"),
                     ),
-                    Text(
-                      "Player : ${viewModel.player!.pseudo}",
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text("Niveau joueur : ${viewModel.player!.level+1}"),
-                    Text("Exp du joueur : ${viewModel.player!.totalexp}"),
-                  ],
-                );
-              }
+                  Text(
+                    "Player : ${viewModel.player!.pseudo}",
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  Text("Niveau joueur : ${viewModel.player!.level} -  DPS : ${viewModel.player.getDamages()}"),
+                  Text("Exp du joueur : ${viewModel.player!.totalexp}"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/coin.png',
+                        width: 24,
+                        height: 24,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        "Coins : ${viewModel.player!.coins}",
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
           );
         } else {
           return const Text("Aucun joueur trouvé.");
