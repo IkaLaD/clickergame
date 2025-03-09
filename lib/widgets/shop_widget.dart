@@ -11,7 +11,7 @@ class ShopWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
                 'Boutique',
@@ -65,7 +65,7 @@ class ShopWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${item.price} gold',
+                              '${item.price} coins',
                               style: TextStyle(color: Colors.grey[700]),
                             ),
                             Text(
@@ -78,9 +78,6 @@ class ShopWidget extends StatelessWidget {
                           onPressed: canAfford
                               ? () {
                             shopViewModel.purchaseItem(item.price, item.attack);
-                            print('Acheté: ${item.name}');
-                            print('Prix: ${item.price} gold');
-                            print('Attaque: ${item.attack}');
                           }
                               : null,
                           style: ElevatedButton.styleFrom(
@@ -90,7 +87,7 @@ class ShopWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: Text(canAfford ? "Acheter" : "Pas assez XP"),
+                          child: Text(canAfford ? "Acheter" : "Pas assez de coins"),
                         ),
                       ),
                     );

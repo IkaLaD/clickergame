@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled1/viewmodels/player_view_model.dart';
 import '../core/services/enemy_service.dart';
 import '../models/enemy_model.dart';
 
@@ -11,19 +12,23 @@ class EnemyViewModel extends ChangeNotifier {
   int get totalLife => _enemy.totalLife;
   int get currentLife => _enemy.currentLife;
 
-  attackEnemy(int damages) {
+  attackEnemy(int damages, PlayerViewModel playerViewModel) {
     print(currentLife);
     _enemy.reduceLife(damages);
     if (currentLife == 0) {
-      nextEnemy();
+      nextEnemy(playerViewModel);
     }
     notifyListeners();
   }
 
-  nextEnemy() {
+
+  nextEnemy(PlayerViewModel playerViewModel) {
     _level += 1;
     fetchNewEnemy = true;
+    playerViewModel.player.gainCoin();
+    playerViewModel.notifyListeners();
   }
+
 
   Future<bool> fetchEnemy() async {
     try {

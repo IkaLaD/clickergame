@@ -5,21 +5,23 @@ import '../models/player_model.dart';
 class PlayerViewModel extends ChangeNotifier {
   final PlayerService _playerRequest = PlayerService();
   late PlayerModel _player;
+
   int get level => _player.level;
   String get pseudo => _player.pseudo;
+  int get coins => _player.coins;
 
-  gainExp(int exp) {
+  void gainExp(int exp) {
     _player.gainExp(exp);
     notifyListeners();
   }
 
-  buyAugment() {
+  void buyAugment() {
     if (_player.buyAugment()) {
       notifyListeners();
     }
   }
 
-  Future<bool> fetchPlayer(id) async {
+  Future<bool> fetchPlayer(int id) async {
     try {
       final player = (await _playerRequest.getPlayerById(id))!;
       _player = player;
@@ -30,6 +32,11 @@ class PlayerViewModel extends ChangeNotifier {
     }
   }
 
-  get player => _player;
-  get damages => _player.getDamages();
+  PlayerModel get player => _player;
+  int get damages => _player.getDamages();
+
+  void gainCoin() {
+    _player.gainCoin();
+    notifyListeners();
+  }
 }

@@ -36,7 +36,7 @@ class EnemyWidget extends StatelessWidget {
                     GestureDetector(
                       onTap: () => {
                         playerViewModel.gainExp(viewModel.enemy!.level+1),
-                        viewModel.attackEnemy(playerViewModel.damages)
+                        viewModel.attackEnemy(playerViewModel.damages, playerViewModel)
                       },
                       child: Image.asset(
                         'assets/enemies/enemy_${viewModel.enemy!.level%7}.png',
@@ -44,7 +44,7 @@ class EnemyWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Ennemi : ${viewModel.enemy!.name}",
+                      "${viewModel.enemy!.name}, niveau : ${viewModel.enemy!.level}",
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text("Niveau : ${viewModel.enemy!.level+1}"),
