@@ -32,57 +32,54 @@ class _HomeViewState extends State<HomeView> {
         title: const Text('Utilisateurs'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Consumer<UserViewModel>(
-          builder: (context, viewModel, child) {
-            if (viewModel.isLoading) {
-              // C'est l'animation du loader
-              return const Center(child: CircularProgressIndicator());
-            } else if (viewModel.errorMessage.isNotEmpty) {
-              return Center(child: Text(viewModel.errorMessage));
-            } else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Barre de recherche
-                  TextField(
-                    controller: _searchController,
-                    decoration: const InputDecoration(
-                      labelText: "Chercher un utilisateur",
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (value) => viewModel.filterUsers(value), // à chaque changement dans la barre de recherche
+      body: Consumer<UserViewModel>(
+        builder: (context, viewModel, child) {
+          if (viewModel.isLoading) {
+            // C'est l'animation du loader
+            return const Center(child: CircularProgressIndicator());
+          } else if (viewModel.errorMessage.isNotEmpty) {
+            return Center(child: Text(viewModel.errorMessage));
+          } else {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Barre de recherche
+                TextField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                    labelText: "Chercher un utilisateur",
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
                   ),
+                  onChanged: (value) => viewModel.filterUsers(value), // à chaque changement dans la barre de recherche
+                ),
 
-                  const SizedBox(height: 30), //espacement vertical entre les widgets
+                const SizedBox(height: 30), //espacement vertical entre les widgets
 
-                  // Bouton Ajouter
-                  ElevatedButton.icon(
-                    onPressed: () => _showUserForm(context, viewModel),
-                    icon: const Icon(Icons.add),
-                    label: const Text("Ajouter un utilisateur"),
-                  ),
+                // Bouton Ajouter
+                ElevatedButton.icon(
+                  onPressed: () => _showUserForm(context, viewModel),
+                  icon: const Icon(Icons.add),
+                  label: const Text("Ajouter un utilisateur"),
+                ),
 
-                  const SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-                  // Liste des utilisateurs
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: UsersTable(
-                        users: viewModel.filteredUsers,
-                        onEdit: (user) => _showUserForm(context, viewModel, user: user),
-                        onDelete: (userId) => _confirmDelete(context, viewModel, userId),
-                      ),
+                // Liste des utilisateurs
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: UsersTable(
+                      users: viewModel.filteredUsers,
+                      onEdit: (user) => _showUserForm(context, viewModel, user: user),
+                      onDelete: (userId) => _confirmDelete(context, viewModel, userId),
                     ),
                   ),
-                ],
-              );
-            }
-          },
-        ),
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }
