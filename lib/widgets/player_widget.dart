@@ -5,15 +5,17 @@ import '../viewmodels/player_view_model.dart';
 
 class PlayerWidget extends StatelessWidget {
   final PlayerViewModel viewModel;
+  final int playerId;
   const PlayerWidget({
     required this.viewModel,
+    required this.playerId,
     super.key
   });
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: viewModel.fetchPlayer(2),
+      future: viewModel.fetchPlayer(playerId), // Utiliser l'ID reçu
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
@@ -26,8 +28,8 @@ class PlayerWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
-                      onPressed: () => viewModel.buyAugment(),
-                      child: const Text("Augment")
+                        onPressed: () => viewModel.buyAugment(),
+                        child: const Text("Augment")
                     ),
                     Text(
                       "Player : ${viewModel.player!.pseudo}",

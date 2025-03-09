@@ -12,8 +12,21 @@ class UserRequest {
   * Cette fonction permet de récupérer la liste complète des users
   */
   Future<List<UserModel>> getUsers() async {
-    List<dynamic> data = await apiService.getRequest("get_users.php");
-    return data.map((user) => UserModel.fromJson(user)).toList();
+    dynamic response = await apiService.getRequest("player");
+    if (response is Map<String, dynamic>) {
+      // La réponse est un objet JSON
+      if (response.containsKey('data')) {
+        // La clé 'data' existe
+        List<dynamic> usersData = response['data'];
+        return usersData.map((user) => UserModel.fromJson(user)).toList();
+      } else {
+        // La clé 'data' n'existe pas, on renvoie une liste vide
+        return [];
+      }
+    } else {
+      // La réponse n'est pas une Map, on renvoie une liste vide
+      return [];
+    }
   }
 
   /*

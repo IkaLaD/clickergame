@@ -6,12 +6,19 @@ class UserViewModel extends ChangeNotifier {
   List<UserModel> _users = [];
   bool _isLoading = false;
   String _error = '';
+  bool _isLoggedIn = false;
+  UserModel? _currentUser;
+  int? _playerId; // Ajout de l'ID du joueur connecté
 
   List<UserModel> get users => _users;
 
   // La variable isLoading nous permet de mettre un état de chargement de nos données en attendant qu'elles s'affichent.
   bool get isLoading => _isLoading;
   String get errorMessage => _error;
+
+  bool get isLoggedIn => _isLoggedIn; // Getter pour l'état de connexion
+  UserModel? get currentUser => _currentUser; // Getter pour l'utilisateur connecté
+  int? get playerId => _playerId; // Getter pour l'ID du joueur
 
   List<UserModel> _filteredUsers = [];
   List<UserModel> get filteredUsers => _filteredUsers;
@@ -71,8 +78,7 @@ class UserViewModel extends ChangeNotifier {
     } else {
       _filteredUsers = _users
           .where((user) =>
-      user.lastname.toLowerCase().contains(query.toLowerCase()) ||
-          user.firstname.toLowerCase().contains(query.toLowerCase()))
+      user.pseudo.toLowerCase().contains(query.toLowerCase()))
           .toList();
     }
     notifyListeners();
@@ -112,6 +118,48 @@ class UserViewModel extends ChangeNotifier {
     } catch (e) {
       _error = e.toString();
     }
+    notifyListeners();
+  }
+
+  /*---------------------*/
+  /* Connexion           */
+  /*---------------------*/
+  Future<bool> login(String pseudo, String password) async {
+    _isLoading = true;
+    _error = '';
+    notifyListeners();
+    try {
+      await Future.delayed(const Duration(seconds: 1));
+      List<UserModel> users = await _userRequest.getUsers();
+
+      for (var user in users) {
+        if (user.pseudo == pseudo && user.password == password) {
+          _currentUser = user;
+          _isLoggedIn = true;
+          _error = '';
+          _playerId = user.id; // Stocker l'ID du joueur connecté
+          notifyListeners();
+          return true;
+        }
+      }
+      _isLoggedIn = false;
+      _error = 'Identifiants incorrects.';
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  void logout() {
+    _isLoggedIn = false;
+    _currentUser = null;
+    _playerId = null;
     notifyListeners();
   }
 }

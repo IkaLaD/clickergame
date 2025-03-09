@@ -4,7 +4,7 @@ import '../config/config.dart';
 
 class ApiService {
 
-  final String baseUrl = Config.baseUrl;
+  final String baseUrl = "http://54.38.181.30/CLICKERGAMES-BACKEND";
 
   /*
     En passant par une requête HTTP, nos données sont dites asynchrones.
@@ -37,7 +37,6 @@ class ApiService {
 
     final response = await http.post(
       url,
-      headers: {"Content-Type": "application/json"},
       body: jsonEncode(data),
     );
     if (response.statusCode == 200) {

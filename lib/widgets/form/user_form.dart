@@ -21,8 +21,7 @@ class UserFormState extends State<UserForm> {
   @override
   void initState() {
     super.initState();
-    firstnameController = TextEditingController(text: widget.user?.firstname ?? '');
-    lastnameController = TextEditingController(text: widget.user?.lastname ?? '');
+    firstnameController = TextEditingController(text: widget.user?.pseudo ?? '');
     selectedDate = widget.user != null ? DateTime.parse(widget.user!.birthdate) : null;
   }
 

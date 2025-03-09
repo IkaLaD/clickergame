@@ -2,16 +2,16 @@ import 'package:intl/intl.dart';
 
 class UserModel {
   final int id;
-  final String lastname;
-  final String firstname;
+  final String pseudo;
   final String birthdate;
+  final String password;
 
   // Constructeur classique
   UserModel({
     required this.id,
-    required this.lastname,
-    required this.firstname,
+    required this.pseudo,
     required this.birthdate,
+    required this.password
   });
 
   /*
@@ -23,11 +23,30 @@ class UserModel {
    */
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id_user'] ?? 0,
-      lastname: json['lastname'] ?? 'Nom inconnu',
-      firstname: json['firstname'] ?? 'Prénom inconnu',
+      id: json['id_player'] ?? 0,
+      pseudo: json['pseudo'] ?? 'Nom pseudo',
       birthdate: json['birthdate'] ?? 'Date inconnue',
+      password: json['password'] ?? 'Mot de passe inconnu',
     );
+  }
+
+  // Méthode pour créer un UserModel à partir d'une Map (utile pour la base de données)
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['id'],
+      pseudo: map['pseudo'] ?? 'Nom pseudo',
+      birthdate: map['birthdate'],
+      password: map['password'] ?? 'Mot de passe inconnu',
+    );
+  }
+
+  // Méthode pour convertir un UserModel en Map (utile pour la base de données)
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'pseudo': pseudo,
+      'birthdate': birthdate,
+    };
   }
 
   /*

@@ -13,9 +13,7 @@ class PlayerService {
 
   Future<PlayerModel?> getPlayerById(int playerId) async {
     final url = Uri.parse('$API_URL/player/$playerId');
-
     final response = await http.get(url);
-
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> playerData = json.decode(response.body);

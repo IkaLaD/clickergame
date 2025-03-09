@@ -26,8 +26,7 @@ class UsersTable extends StatelessWidget {
       ],
       rows: users.map((user) {
         return DataRow(cells: [
-          DataCell(Text(user.lastname)),
-          DataCell(Text(user.firstname)),
+          DataCell(Text(user.pseudo)),
           DataCell(Text(user.age.toString())),
           DataCell(Row(
             children: [
