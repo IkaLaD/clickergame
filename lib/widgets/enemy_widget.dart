@@ -16,12 +16,17 @@ class EnemyWidget extends StatefulWidget {
   });
 
   @override
-  createState() => _EnemyWidgetState();
+  createState() => _EnemyWidgetState(gameViewModel: gameViewModel);
 }
 
 class _EnemyWidgetState extends State<EnemyWidget> {
   final List<OverlayEntry> _overlayEntries = [];
   late Timer _timer;
+  final GameViewModel gameViewModel;
+
+  _EnemyWidgetState({
+    required this.gameViewModel
+  });
 
   @override
   void initState() {
@@ -48,8 +53,9 @@ class _EnemyWidgetState extends State<EnemyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    EnemyViewModel viewModel = gameViewModel.enemyViewModel;
-    PlayerViewModel playerViewModel = gameViewModel.playerViewModel;
+    EnemyViewModel viewModel = widget.gameViewModel.enemyViewModel;
+    PlayerViewModel playerViewModel = widget.gameViewModel.playerViewModel;
+
     return FutureBuilder<bool>(
       future: viewModel.fetchEnemy(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -58,42 +64,17 @@ class _EnemyWidgetState extends State<EnemyWidget> {
         } else if (snapshot.hasError) {
           return Text("Erreur : ${snapshot.error}");
         } else if (snapshot.hasData && snapshot.data == true && viewModel.enemy != null) {
+          if (viewModel.fetchNewEnemy) {
+            viewModel.fetchEnemy();
+            viewModel.fetchNewEnemy = false;
+          }
+
           return Consumer<EnemyViewModel>(
-              builder: (context, viewModel, child) {
-                if (viewModel.fetchNewEnemy) {
-                  viewModel.fetchEnemy();
-                  viewModel.fetchNewEnemy = false;
-                }
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () => {
-                        playerViewModel.gainExp(viewModel.enemy!.level+1),
-                        viewModel.attackEnemy(playerViewModel.damages, playerViewModel)
-                      },
-                      child: Image.asset(
-                        'assets/enemies/enemy_${viewModel.enemy!.level%7}.png',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Text(
-                      "${viewModel.enemy!.name}, niveau : ${viewModel.enemy!.level}",
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text("Niveau : ${viewModel.enemy!.level+1}"),
-                    Text("Vie : ${viewModel.currentLife} / ${viewModel.totalLife}"),
-                  ],
-                );
-              }
             builder: (context, viewModel, child) {
               if (viewModel.fetchNewEnemy) {
                 _timer.cancel();
-
                 _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-                  if (timer.tick == 100 &&
-                      viewModel.isPreviousEnemy == false &&
-                      viewModel.level != 0) {
+                  if (timer.tick == 100 && !viewModel.isPreviousEnemy && viewModel.level != 0) {
                     viewModel.previousEnemy();
                   }
                 });
@@ -109,7 +90,7 @@ class _EnemyWidgetState extends State<EnemyWidget> {
                     behavior: HitTestBehavior.translucent,
                     onPanStart: (details) {
                       playerViewModel.gainExp(viewModel.enemy!.level + 1);
-                      viewModel.attackEnemy(playerViewModel.damages);
+                      viewModel.attackEnemy(playerViewModel);
                       _showParticules(details);
                     },
                     child: Image.asset(
@@ -118,12 +99,11 @@ class _EnemyWidgetState extends State<EnemyWidget> {
                     ),
                   ),
                   Text(
-                    "Ennemi : ${viewModel.enemy!.name}",
+                    "${viewModel.enemy!.name}",
                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text("Niveau : ${viewModel.enemy!.level + 1}"),
                   Text("Vie : ${viewModel.currentLife} / ${viewModel.totalLife}"),
-                  _backToEnemy(viewModel)
+                  if (viewModel.isPreviousEnemy) _backToEnemy(viewModel, gameViewModel.playerViewModel)
                 ],
               );
             },
@@ -135,17 +115,11 @@ class _EnemyWidgetState extends State<EnemyWidget> {
     );
   }
 
-  _backToEnemy(EnemyViewModel viewModel) {
-    if (!viewModel.isPreviousEnemy) {
-      return const TextButton(
-          onPressed: null,
-          child: Text("Revenir à l'Ennemi")
-      );
-    }
+  _backToEnemy(EnemyViewModel viewModel, PlayerViewModel playerViewModel) {
     return TextButton(
         onPressed: () {
-            viewModel.backToEnemy();
-          },
+          viewModel.backToEnemy(playerViewModel);
+        },
         child: const Text("Revenir à l'Ennemi")
     );
   }

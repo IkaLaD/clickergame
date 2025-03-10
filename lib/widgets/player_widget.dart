@@ -16,12 +16,12 @@ class PlayerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: viewModel.fetchPlayer(playerId), // Utiliser l'ID reçu
+      future: viewModel.fetchPlayer(playerId),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text("Erreur : \${snapshot.error}");
+          return Text("Erreur : ${snapshot.error}");
         } else if (snapshot.hasData && snapshot.data == true &&
             viewModel.player != null) {
           return Consumer<PlayerViewModel>(
@@ -31,22 +31,20 @@ class PlayerWidget extends StatelessWidget {
                 children: [
                   if (viewModel.player!.canBuyAugment)
                     TextButton(
-                        onPressed: () => viewModel.buyAugment(),
-                        child: const Text("Augment")
                       onPressed: () {
-                        bool success = viewModel.player.buyAugment();
+                        bool success = viewModel.player!.buyAugment();
                         if (success) {
                           viewModel.notifyListeners();
                         }
                       },
-                      child: const Text("Passer au niveau supérieur"),
+                      child: const Text("Augmenter le niveau"),
                     ),
                   Text(
                     "Player : ${viewModel.player!.pseudo}",
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text("Niveau joueur : ${viewModel.player!.level} -  DPS : ${viewModel.player.getDamages()}"),
+                  Text("Niveau joueur : ${viewModel.player!.level} -  DPS : ${viewModel.player!.getDamages()}"),
                   Text("Exp du joueur : ${viewModel.player!.totalexp}"),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -26,17 +26,10 @@ void main() {
           previous!..updateData()
         ),
 
-        ChangeNotifierProvider<UserViewModel>(create: (context) => UserViewModel()), // Utilisation de UserViewModel
+        ChangeNotifierProvider<UserViewModel>(create: (context) => UserViewModel()),
       ],
-      child: MaterialApp(
-        title: 'Clicker Game',
-        theme: ThemeData(primarySwatch: Colors.blue),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const GameView(),
-        },
-      ),
-    ),
+      child: const MyApp(),
+    )
   );
 }
 
@@ -80,10 +73,8 @@ class _CheckLoginState extends State<CheckLogin> {
     final userViewModel = Provider.of<UserViewModel>(context, listen: false);
     await userViewModel.fetchUsers();
     if (userViewModel.isLoggedIn) {
-      // L'utilisateur est connecté, on va vers la page du jeu
       Navigator.pushReplacementNamed(context, '/game');
     } else {
-      // L'utilisateur n'est pas connecté, on va vers la page de connexion
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const UserView()),

@@ -30,10 +30,8 @@ class _UserViewState extends State<UserView> {
         child: Consumer<UserViewModel>(
           builder: (context, userViewModel, child) {
             if (userViewModel.isLoggedIn) {
-              // Display GameView directly
               return GameView(playerId: userViewModel.currentUser!.id);
             } else {
-              // Afficher le formulaire de connexion
               return Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 300),
@@ -53,7 +51,7 @@ class _UserViewState extends State<UserView> {
                       TextFormField(
                         controller: _passwordController,
                         decoration: const InputDecoration(labelText: 'Mot de passe'),
-                        obscureText: true, // Cache les caractères tapés
+                        obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Veuillez entrer votre mot de passe';
@@ -76,7 +74,6 @@ class _UserViewState extends State<UserView> {
                               _passwordController.text,
                             );
                             if (success) {
-                              // No navigation needed, GameView will be displayed
                             }
                           }
                         },
