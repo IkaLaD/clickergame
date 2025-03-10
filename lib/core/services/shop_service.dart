@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../../models/shop_model.dart';
 
 class ShopService {
-  final API_URL = "http://localhost/CLICKERGAMES-BACKEND";
+  final API_URL = "http://54.38.181.30/CLICKERGAMES-BACKEND";
 
 
   Future<ShopItem> getShopById(int shopId) async {

@@ -7,7 +7,7 @@ import '../config/config.dart';
 
 class EnemyService {
 
-  final API_URL = "http://localhost/CLICKERGAMES-BACKEND";
+  final API_URL = "http://54.38.181.30/CLICKERGAMES-BACKEND";
 
   Future<EnemyModel?> getEnemyById(int enemyId) async {
     final url = Uri.parse('$API_URL/ennemie/$enemyId');

@@ -48,8 +48,9 @@ class _GameViewState extends State<GameView> {
   Future<void> _fetchBannerText() async {
     final leaderboard = await _apiService.fetchLeaderBoard();
     String text = "";
-    for (var player in leaderboard) {
-      text += "${player['pseudo']} : niveau ${player['level']}\n";
+    for (int i = 0 ; i < 3 ; i++) {
+      final player = leaderboard[i];
+      text += "top ${i+1} : ${player['pseudo']} niveau ${player['level']}\n";
     }
     _bannerTextNotifier.updateText(text);
   }
@@ -62,27 +63,24 @@ class _GameViewState extends State<GameView> {
     );
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final bannerWidth = screenWidth / 4;
+    final bannerHeight = 100.0; // Fixed height for the banner
 
     return Scaffold(
       body: Stack(
         children: [
           const MovingBackground(),
-
-          // 2. Right-side Banner
-          Positioned(
-            right: 0,
-            top: 0,
-            bottom: 0,
-            child: Container(
-              width: bannerWidth,
-              color: Colors.black.withOpacity(0.3),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
+          Column(
+            children: [
+              // 1. Top Banner
+              Container(
+                height: bannerHeight,
+                width: screenWidth,
+                color: Colors.black.withOpacity(0.3),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
                       "Leaderboard",
                       style: TextStyle(
                         color: Colors.white,
@@ -90,40 +88,42 @@ class _GameViewState extends State<GameView> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ValueListenableBuilder<String>(
-                        valueListenable: _bannerTextNotifier,
-                        builder: (context, value, child) {
-                          return Text(
-                            value,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          );
-                        },
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ValueListenableBuilder<String>(
+                          valueListenable: _bannerTextNotifier,
+                          builder: (context, value, child) {
+                            return Text(
+                              value,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              PlayerWidget(
-                  viewModel: gameViewModel.playerViewModel,
-                  playerId: widget.playerId),
-              EnemyWidget(gameViewModel: gameViewModel),
+              // 2. Main Content
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    PlayerWidget(
+                        viewModel: gameViewModel.playerViewModel,
+                        playerId: widget.playerId),
+                    EnemyWidget(gameViewModel: gameViewModel),
+                  ],
+                ),
+              ),
             ],
           ),
-
           // 5. ShopWidget (Top)
           Positioned(
             bottom: 0,

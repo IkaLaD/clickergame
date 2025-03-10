@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class PlayerService {
 
-  final API_URL = "http://localhost/CLICKERGAMES-BACKEND";
+  final API_URL = "http://54.38.181.30/CLICKERGAMES-BACKEND";
 
   Future<PlayerModel?> getPlayerById(int playerId) async {
     final url = Uri.parse('$API_URL/player/$playerId');
