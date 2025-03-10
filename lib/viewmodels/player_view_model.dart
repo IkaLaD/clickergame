@@ -33,7 +33,7 @@ class PlayerViewModel extends ChangeNotifier {
   }
 
   PlayerModel get player => _player;
-  int get damages => _player.getDamages();
+  int get damages => _player.attack;
 
   void gainCoin() {
     _player.gainCoin();

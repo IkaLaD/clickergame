@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled1/models/player_model.dart';
 import 'package:untitled1/viewmodels/player_view_model.dart';
 import '../core/services/enemy_service.dart';
 import '../models/enemy_model.dart';
@@ -48,8 +50,6 @@ class EnemyViewModel extends ChangeNotifier {
     isPreviousEnemy = false;
 
   }
-
-
 
   Future<bool> fetchEnemy() async {
     try {
