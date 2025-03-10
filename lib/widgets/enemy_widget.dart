@@ -59,10 +59,7 @@ class _EnemyWidgetState extends State<EnemyWidget> {
         } else if (snapshot.hasError) {
           return Text("Erreur : ${snapshot.error}");
         } else if (snapshot.hasData && snapshot.data == true && viewModel.enemy != null) {
-          if (viewModel.fetchNewEnemy) {
-            viewModel.fetchEnemy();
-            viewModel.fetchNewEnemy = false;
-          }
+
 
           return Consumer<EnemyViewModel>(
             builder: (context, viewModel, child) {
