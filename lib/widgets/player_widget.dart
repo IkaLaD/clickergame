@@ -29,10 +29,10 @@ class PlayerWidget extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (viewModel.player!.canBuyAugment)
+                  if (viewModel.player.canBuyAugment)
                     TextButton(
                       onPressed: () {
-                        bool success = viewModel.player!.buyAugment();
+                        bool success = viewModel.player.buyAugment();
                         if (success) {
                           viewModel.notifyListeners();
                         }
@@ -40,12 +40,12 @@ class PlayerWidget extends StatelessWidget {
                       child: const Text("Augmenter le niveau"),
                     ),
                   Text(
-                    "Player : ${viewModel.player!.pseudo}",
+                    "Player : ${viewModel.player.pseudo}",
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text("Niveau joueur : ${viewModel.player!.level} -  DPS : ${viewModel.player!.getDamages()}"),
-                  Text("Exp du joueur : ${viewModel.player!.totalexp}"),
+                  Text("Niveau joueur : ${viewModel.player.level} -  DPS : ${viewModel.player.attack}"),
+                  Text("Exp du joueur : ${viewModel.player.totalexp}"),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -56,7 +56,7 @@ class PlayerWidget extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        "Coins : ${viewModel.player!.coins}",
+                        "Coins : ${viewModel.player.coins}",
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),

@@ -34,7 +34,9 @@ class ShopViewModel extends ChangeNotifier {
   void purchaseItem(ShopItem item) {
     if (canAfford(item.price)) {
       _player.player.coins -= item.price;
-      _player.player.augments.add(item.attack);
+      _player.player.updateCoins(_player.player.id, _player.player.coins);
+      _player.player.attack += item.attack;
+      _player.player.updateAttack(_player.player.id, _player.player.attack);
       _player.notifyListeners();
 
       String baseName = _getBaseName(item.name);
