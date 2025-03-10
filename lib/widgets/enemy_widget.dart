@@ -87,28 +87,46 @@ class _EnemyWidgetState extends State<EnemyWidget> {
                     },
                     child: Image.asset(
                       'assets/enemies/enemy_${viewModel.enemy!.level % 7}.png',
-                      fit: BoxFit.cover,
+                      width: 450*0.75,
+                      height: 400*0.75,
                     ),
                   ),
-                  Text(
-                    "${viewModel.enemy!.name}",
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    width: 200,
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 6,
+                        )
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       children: [
-                        LinearProgressIndicator(
-                          value: viewModel.currentLife / viewModel.totalLife,
-                          backgroundColor: Colors.red.withOpacity(0.3),
-                          valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+                        Text(
+                          "${viewModel.enemy!.name}",
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        Text("Vie : ${viewModel.currentLife} / ${viewModel.totalLife}")
+                        SizedBox(
+                          width: 200,
+                          child: Column(
+                              children: [
+                                LinearProgressIndicator(
+                                  value: viewModel.currentLife / viewModel.totalLife,
+                                  backgroundColor: Colors.red.withOpacity(0.3),
+                                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+                                ),
+                                Text("Vie : ${viewModel.currentLife} / ${viewModel.totalLife}")
+                              ]
+                          ),
+                        ),
+                        if (viewModel.isPreviousEnemy) _backToEnemy(viewModel)
+                        else const TextButton(onPressed: null, child: Text("")),
                       ]
-                    ),
+                    )
                   ),
-                  if (viewModel.isPreviousEnemy) _backToEnemy(viewModel)
-                  else const TextButton(onPressed: null, child: Text("")),
                 ],
               );
             },

@@ -22,47 +22,63 @@ class PlayerWidget extends StatelessWidget {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text("Erreur : ${snapshot.error}");
-        } else if (snapshot.hasData && snapshot.data == true &&
-            viewModel.player != null) {
+        } else if (snapshot.hasData && snapshot.data == true) {
           return Consumer<PlayerViewModel>(
             builder: (context, viewModel, child) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (viewModel.player!.canBuyAugment)
-                    TextButton(
-                      onPressed: () {
-                        bool success = viewModel.player!.buyAugment();
-                        if (success) {
-                          viewModel.notifyListeners();
-                        }
-                      },
-                      child: const Text("Augmenter le niveau"),
-                    ),
-                  Text(
-                    "Player : ${viewModel.player!.pseudo}",
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text("Niveau joueur : ${viewModel.player!.level} -  DPS : ${viewModel.player!.getDamages()}"),
-                  Text("Exp du joueur : ${viewModel.player!.totalexp}"),
-                  Row(
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 6,
+                    )
+                  ],
+                ),
+                padding: const EdgeInsets.all(10),
+                child: SizedBox(
+                  width: 200,
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/coin.png',
-                        width: 24,
-                        height: 24,
-                      ),
-                      const SizedBox(width: 8),
+                      if (viewModel.player.canBuyAugment)
+                        TextButton(
+                          onPressed: () {
+                            bool success = viewModel.player.buyAugment();
+                            if (success) {
+                              viewModel.notifyListeners();
+                            }
+                          },
+                          child: const Text("Augmenter le niveau"),
+                        )
+                      else const TextButton(onPressed: null, child: Text("")),
                       Text(
-                        "Coins : ${viewModel.player!.coins}",
+                        "Player : ${viewModel.player.pseudo}",
                         style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text("Niveau joueur : ${viewModel.player.level} -  DPS : ${viewModel.player.getDamages()}"),
+                      Text("Exp du joueur : ${viewModel.player.totalexp}"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/coin.png',
+                            width: 24,
+                            height: 24,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            "Coins : ${viewModel.player.coins}",
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                )
               );
             },
           );

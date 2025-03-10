@@ -130,7 +130,7 @@ class _GameViewState extends State<GameView> {
             left: 0,
             right: 0,
             child: Container(
-              height: 250,
+              height: 200,
               child: ShopWidget(),
             ),
           ),
