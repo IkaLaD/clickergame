@@ -13,22 +13,24 @@ class EnemyViewModel extends ChangeNotifier {
   int get totalLife => _enemy.totalLife;
   int get currentLife => _enemy.currentLife;
 
-  attackEnemy(PlayerViewModel playerViewModel) {
-    _enemy.reduceLife(playerViewModel.damages);
+  bool attackEnemy(damages) {
+    bool isDead = false;
+    _enemy.reduceLife(damages);
     if (currentLife == 0) {
       if (isPreviousEnemy){
         fetchNewEnemy = true;
       }
       else {
-        nextEnemy(playerViewModel);
+        nextEnemy();
       }
-
+      isDead = true;
     }
     notifyListeners();
+    return isDead;
   }
 
-  backToEnemy(PlayerViewModel playerViewModel) {
-    nextEnemy(playerViewModel);
+  backToEnemy() {
+    nextEnemy();
     notifyListeners();
   }
 
@@ -40,14 +42,11 @@ class EnemyViewModel extends ChangeNotifier {
   }
 
 
-  void nextEnemy(PlayerViewModel playerViewModel) {
+  void nextEnemy() {
     _level += 1;
     fetchNewEnemy = true;
-    playerViewModel.player.gainCoin();
-    playerViewModel.notifyListeners();
     isPreviousEnemy = false;
 
-    fetchEnemy();
   }
 
 
@@ -64,7 +63,7 @@ class EnemyViewModel extends ChangeNotifier {
       final int baseLife = response.totalLife;
 
       _enemy = EnemyModel(
-        name: '${response.name}  ${_level.toString()}',
+        name: '${response.name}  ${(_level+1).toString()}',
         totalLife: baseLife,
         level: _level,
       );
@@ -93,7 +92,7 @@ class EnemyViewModel extends ChangeNotifier {
         final int baseLife = createdEnemy.totalLife;
 
         _enemy = EnemyModel(
-          name: '${createdEnemy.name}  ${_level.toString()}',
+          name: '${createdEnemy.name}  ${(_level+1).toString()}',
           totalLife: baseLife,
           level: _level,
         );

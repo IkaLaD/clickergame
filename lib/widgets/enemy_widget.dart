@@ -85,7 +85,7 @@ class _EnemyWidgetState extends State<EnemyWidget> {
                     behavior: HitTestBehavior.translucent,
                     onPanStart: (details) {
                       playerViewModel.gainExp(viewModel.enemy!.level + 1);
-                      viewModel.attackEnemy(playerViewModel);
+                      if (viewModel.attackEnemy(playerViewModel.damages)) playerViewModel.gainCoin();
                       _showParticules(details);
                     },
                     child: Image.asset(
@@ -97,8 +97,21 @@ class _EnemyWidgetState extends State<EnemyWidget> {
                     "${viewModel.enemy!.name}",
                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  Text("Vie : ${viewModel.currentLife} / ${viewModel.totalLife}"),
-                  if (viewModel.isPreviousEnemy) _backToEnemy(viewModel, playerViewModel)
+                  SizedBox(
+                    width: 200,
+                    child: Column(
+                      children: [
+                        LinearProgressIndicator(
+                          value: viewModel.currentLife / viewModel.totalLife,
+                          backgroundColor: Colors.red.withOpacity(0.3),
+                          valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+                        ),
+                        Text("Vie : ${viewModel.currentLife} / ${viewModel.totalLife}")
+                      ]
+                    ),
+                  ),
+                  if (viewModel.isPreviousEnemy) _backToEnemy(viewModel)
+                  else const TextButton(onPressed: null, child: Text("")),
                 ],
               );
             },
@@ -110,10 +123,10 @@ class _EnemyWidgetState extends State<EnemyWidget> {
     );
   }
 
-  _backToEnemy(EnemyViewModel viewModel, PlayerViewModel playerViewModel) {
+  _backToEnemy(EnemyViewModel viewModel) {
     return TextButton(
         onPressed: () {
-          viewModel.backToEnemy(playerViewModel);
+          viewModel.backToEnemy();
         },
         child: const Text("Revenir à l'Ennemi")
     );

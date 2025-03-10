@@ -14,7 +14,7 @@ class PlayerModel {
 
   });
 
-  bool get canBuyAugment => totalexp >= 100;
+  bool get canBuyAugment => totalexp >= 100*level;
 
   factory PlayerModel.fromJson(Map<String, dynamic> json) {
     final playerData = json['data'][0];

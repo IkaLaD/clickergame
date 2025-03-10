@@ -12,7 +12,7 @@ import '../widgets/player_widget.dart';
 
 class GameView extends StatelessWidget {
   final int playerId;
-  const GameView({Key? key, required this.playerId}) : super(key: key);
+  const GameView({super.key, required this.playerId});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,6 @@ class GameView extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Clicker Game")),
       body: Stack(
         children: [
           const MovingBackground(),
@@ -32,7 +31,7 @@ class GameView extends StatelessWidget {
                 PlayerWidget(viewModel: gameViewModel.playerViewModel, playerId: playerId),
                 EnemyWidget(gameViewModel: gameViewModel),
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     height: 250,
                     child: ShopWidget(),
                   ),
