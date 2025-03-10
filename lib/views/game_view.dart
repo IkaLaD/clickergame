@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled1/core/services/player_service.dart';
+import 'package:untitled1/models/banner_text_notifier.dart';
 import 'package:untitled1/widgets/background/moving_background.dart';
 import 'package:untitled1/widgets/shop_widget.dart';
 
@@ -20,9 +21,9 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
-  String _bannerText = 'Loading...'; // Initial text
   final PlayerService _apiService = PlayerService();
   Timer? _timer;
+  final BannerTextNotifier _bannerTextNotifier = BannerTextNotifier('Loading...');
 
   @override
   void initState() {
@@ -34,24 +35,23 @@ class _GameViewState extends State<GameView> {
   @override
   void dispose() {
     _timer?.cancel(); // Cancel the timer when the widget is disposed
+    _bannerTextNotifier.dispose();
     super.dispose();
   }
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      _fetchBannerText(); // Fetch new text every 5 seconds
+      _fetchBannerText();
     });
   }
 
   Future<void> _fetchBannerText() async {
     final leaderboard = await _apiService.fetchLeaderBoard();
     String text = "";
-    for (var player in leaderboard){
+    for (var player in leaderboard) {
       text += "${player['pseudo']} : niveau ${player['level']}\n";
     }
-    setState(() {
-      _bannerText = text; // Update the state with the new text
-    });
+    _bannerTextNotifier.updateText(text);
   }
 
   @override
@@ -94,13 +94,18 @@ class _GameViewState extends State<GameView> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        _bannerText,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
+                      child: ValueListenableBuilder<String>(
+                        valueListenable: _bannerTextNotifier,
+                        builder: (context, value, child) {
+                          return Text(
+                            value,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
