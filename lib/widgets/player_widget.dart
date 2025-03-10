@@ -58,7 +58,7 @@ class PlayerWidget extends StatelessWidget {
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      Text("Niveau joueur : ${viewModel.player.level} -  DPS : ${viewModel.player.getDamages()}"),
+                      Text("Niveau joueur : ${viewModel.player.level} -  DPS : ${viewModel.player.attack}"),
                       Text("Exp du joueur : ${viewModel.player.totalexp}"),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
