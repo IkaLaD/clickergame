@@ -16,17 +16,12 @@ class EnemyWidget extends StatefulWidget {
   });
 
   @override
-  createState() => _EnemyWidgetState(gameViewModel: gameViewModel);
+  createState() => _EnemyWidgetState();
 }
 
 class _EnemyWidgetState extends State<EnemyWidget> {
   final List<OverlayEntry> _overlayEntries = [];
   late Timer _timer;
-  final GameViewModel gameViewModel;
-
-  _EnemyWidgetState({
-    required this.gameViewModel
-  });
 
   @override
   void initState() {
@@ -103,7 +98,7 @@ class _EnemyWidgetState extends State<EnemyWidget> {
                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Text("Vie : ${viewModel.currentLife} / ${viewModel.totalLife}"),
-                  if (viewModel.isPreviousEnemy) _backToEnemy(viewModel, gameViewModel.playerViewModel)
+                  if (viewModel.isPreviousEnemy) _backToEnemy(viewModel, playerViewModel)
                 ],
               );
             },
