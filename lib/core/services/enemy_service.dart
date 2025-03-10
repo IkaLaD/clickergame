@@ -1,9 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/services.dart';
 import '../../models/enemy_model.dart';
 import 'package:http/http.dart' as http;
-import '../config/config.dart';
 
 class EnemyService {
 

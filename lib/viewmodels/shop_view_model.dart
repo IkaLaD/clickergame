@@ -19,7 +19,7 @@ class ShopViewModel extends ChangeNotifier {
   Future<void> fetchShopItems() async {
     print("actualisé");
     try {
-      _items = await _shopService.getShopItems();
+      _items = await _shopService.getShopItems(_player.player.id);
       print(_items);
       notifyListeners();
     } catch (e) {
@@ -38,6 +38,9 @@ class ShopViewModel extends ChangeNotifier {
       _player.player.attack += item.attack;
       _player.player.updateAttack(_player.player.id, _player.player.attack);
       _player.notifyListeners();
+      
+      
+      _shopService.buyItem(_player.player.id, item.id, item.level);
 
       String baseName = _getBaseName(item.name);
 
@@ -46,6 +49,7 @@ class ShopViewModel extends ChangeNotifier {
         price: (item.price * 1.5).toInt(),
         attack: (item.attack * 1.5).toInt(),
         level: item.level + 1,
+          id: item.id
       );
 
       int index = _items.indexWhere((i) => _getBaseName(i.name) == baseName);
